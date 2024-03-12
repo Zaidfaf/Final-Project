@@ -13,6 +13,7 @@ void sensorMonitoringInit();
 void sensorMonitoringUpdate();
 float temperatureSensorReadCelsius();
 bool gasDetection();
+
 //=====[#include guards - end]=================================================
 
 #endif // _SENSOR_MONITORING_H_
