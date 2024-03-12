@@ -17,6 +17,7 @@
 #define TIME_INCREMENT_INTERFACE_MS 10
 
 //=====[Declarations (prototypes) of private functions]========================
+
 DigitalIn displayChange(PD_3);
 
 typedef enum {
@@ -46,7 +47,6 @@ void userInterfaceInit()
 void userInterfaceUpdate()
 {
     userInterfaceDisplayUpdate();
-
 }
 
 //=====[Implementations of private functions]===================================
@@ -73,7 +73,6 @@ static void userInterfaceDisplayUpdate()
     char angleString[3] = "";
     getScreenNumber();
     sensorMonitoringUpdate();
-
     if( accumulatedDisplayTime >=
         DISPLAY_REFRESH_TIME_MS ) {
         accumulatedDisplayTime = 0;
@@ -99,7 +98,6 @@ static void userInterfaceDisplayUpdate()
                         displayStringWrite( "Gas:ND " );
                         displayCharPositionWrite ( 0,1 );
                         displayStringWrite( "Engine Status:ON" );
-
                     }
                     break;
                 case screen2:
@@ -109,7 +107,6 @@ static void userInterfaceDisplayUpdate()
                         displayCharPositionWrite ( 0,1 );
                         displayStringWrite( "  GAS DETECTED  " );
                     } else {
-
                         sprintf(speedString, "%.2f", speedtest());
                         displayCharPositionWrite ( 0,0 );
                         displayStringWrite( "Speed:" );
@@ -117,7 +114,6 @@ static void userInterfaceDisplayUpdate()
                         displayStringWrite(speedString);
                         displayCharPositionWrite ( 9,0 );
                         displayStringWrite( " mph  " );
-                        
                         if (aileronsdegrees() < 0){
                             aileronDeg = -aileronsdegrees();
                             displayCharPositionWrite ( 15,1 );
@@ -135,16 +131,12 @@ static void userInterfaceDisplayUpdate()
                         displayStringWrite( angleString );
                         displayCharPositionWrite ( 14,1 );
                         displayStringWrite( "\xDF" );
-                        
-
                     }
                     break;
-               
             }   
         } else {
             displayCharPositionWrite ( 0,0 );
             displayStringWrite( "   Welcome to   " );
-        
             displayCharPositionWrite ( 0,1 );
             displayStringWrite( "  the airplane  " );
         }
