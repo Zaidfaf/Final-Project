@@ -19,7 +19,6 @@ void airplaneSystemInit()
     userInterfaceInit();
     propellerControlInit();
     aileronsInit();
-    propellerControlInit();
 }
 
 void airplaneSystemUpdate()
