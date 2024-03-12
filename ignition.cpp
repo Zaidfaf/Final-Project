@@ -34,6 +34,7 @@ typedef enum {
 } buttonState_t;
 
 //=====[Declaration and initialization of private global objects]===============
+
 DigitalIn switch_1(PA_5);
 DigitalIn switch_2(D12);
 DigitalIn switch_3(D11);
