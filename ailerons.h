@@ -15,6 +15,7 @@
 void aileronsInit();
 void aileronsUpdate();
 float aileronsdegrees();
+
 //=====[#include guards - end]=================================================
 
 #endif // _AIRLERONS_H_
