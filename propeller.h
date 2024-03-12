@@ -1,20 +1,28 @@
-
 //=====[#include guards - begin]===============================================
 
-#ifndef _AILERONS_H_
-#define _AILERONS_H_
+#ifndef _PROPELLER_H_
+#define _PROPELLER_H_
 
 //=====[Declaration of public defines]=========================================
 
-#define TIME_INCREMENT_MS   10
-
 //=====[Declaration of public data types]======================================
+
+typedef enum {
+    DIRECTION_1,
+    DIRECTION_2,
+    STOPPED
+} motorDirection_t;
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void aileronsInit();
-void aileronsUpdate();
-float aileronsdegrees();
+void propellerControlInit();
+void propellerDirectionWrite( motorDirection_t direction );
+
+motorDirection_t propellerDirectionRead();
+
+void propellerControlUpdate();
+float speedtest();
+
 //=====[#include guards - end]=================================================
 
-#endif // _AIRLERONS_H_
+#endif // _MOTOR_H_

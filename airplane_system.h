@@ -1,8 +1,7 @@
-
 //=====[#include guards - begin]===============================================
 
-#ifndef _AILERONS_H_
-#define _AILERONS_H_
+#ifndef _AIRPLANE_SYSTEM_H_
+#define _AIRPLANE_SYSTEM_H_
 
 //=====[Declaration of public defines]=========================================
 
@@ -12,9 +11,9 @@
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void aileronsInit();
-void aileronsUpdate();
-float aileronsdegrees();
+void airplaneSystemInit();
+void airplaneSystemUpdate();
+
 //=====[#include guards - end]=================================================
 
-#endif // _AIRLERONS_H_
+#endif // _AIRPLANE_SYSTEM_H_
