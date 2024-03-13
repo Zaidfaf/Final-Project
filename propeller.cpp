@@ -11,15 +11,21 @@
 #define MOTOR_UPDATE_TIME 9
 
 //=====[Declaration of private data types]=====================================
+
+typedef enum {
+    DIRECTION_1,
+    DIRECTION_2,
+    STOPPED
+} motorDirection_t;
+
 motorDirection_t motorDirection;
 motorDirection_t motorState;
+
 //=====[Declaration and initialization of public global objects]===============
 
 AnalogIn speedControl(A0);
 DigitalInOut motorM1Pin(PF_2);
 DigitalInOut motorM2Pin(PE_3);
-
-
 
 //=====[Declaration of external public global variables]=======================
 
