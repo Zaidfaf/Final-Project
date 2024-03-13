@@ -10,6 +10,8 @@
 
 #define MOTOR_UPDATE_TIME 9
 
+//=====[Declaration of private data types]=====================================
+
 AnalogIn speedControl(A0);
 DigitalInOut motorM1Pin(PF_2);
 DigitalInOut motorM2Pin(PE_3);
