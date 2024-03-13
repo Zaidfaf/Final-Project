@@ -1,5 +1,3 @@
-
-
 /*! @mainpage Example 1.5 Modularized and with doxygen comments
 * @date Friday, January 29, 2021
 * @authors Pablo Gomez, Ariel Lutenberg and Eric Pernia
@@ -22,7 +20,7 @@
 #include "ignition.h"
 
 #define DEBOUNCE_BUTTON_TIME_MS                 40
-#define TIME_INCREMENT_IGNITION_MS                 10
+#define TIME_INCREMENT_IGNITION_MS              10
 
 //=====[Declaration of private data types]=====================================
 
@@ -34,7 +32,6 @@ typedef enum {
 } buttonState_t;
 
 //=====[Declaration and initialization of private global objects]===============
-
 DigitalIn switch_1(PA_5);
 DigitalIn switch_2(D12);
 DigitalIn switch_3(D11);
@@ -65,19 +62,30 @@ bool debounceButtonUpdate();
 
 //=====[Implementations of public functions]===================================
 
+/**
+ * @brief Initializes the ignition system.
+ */
 void ignitionInit() 
 {
-
+    // Set the pull-down mode for input switches
     switch_1.mode(PullDown);
     switch_2.mode(PullDown);
     switch_3.mode(PullDown);
     switch_4.mode(PullDown);
     ignitionButton.mode(PullDown);
+    
+    // Initialize the button debounce mechanism
     debounceButtonInit();
 }
 
+/**
+ * @brief Updates the ignition system state based on button events and switch positions.
+ */
 void ignitionUpdate() {
+    // Check for a released ignition button event with debouncing
     bool enterButtonReleasedEvent = debounceButtonUpdate();
+
+    // Toggle the ignition LED based on button and switch conditions
     if (ignitionLed.read()) {
         if (enterButtonReleasedEvent) {
             ignitionLed = OFF;
@@ -89,6 +97,10 @@ void ignitionUpdate() {
     }
 }
 
+/**
+ * @brief Checks if the ignition is currently ON.
+ * @return true if ignition is ON, false otherwise.
+ */
 bool isIgnition()
 {
     return ignitionLed.read() == ON;
@@ -96,8 +108,12 @@ bool isIgnition()
 
 //=====[Implementations of private functions]===================================
 
+/**
+ * @brief Initializes the button debounce mechanism.
+ */
 void debounceButtonInit()
 {
+    // Determine the initial state of the ignition button
     if( ignitionButton == 1) {
         ignitionButtonState = BUTTON_UP;
     } else {
@@ -105,9 +121,16 @@ void debounceButtonInit()
     }
 }
 
+/**
+ * @brief Updates the button debounce mechanism and detects button release events.
+ * @return true if an ignition button release event occurred, false otherwise.
+ */
 bool debounceButtonUpdate()
 {
+    // Flag for ignition button release event
     bool ignitionButtonReleasedEvent = false;
+
+    // State machine for button debouncing
     switch( ignitionButtonState ) {
 
     case BUTTON_UP:
@@ -150,8 +173,10 @@ bool debounceButtonUpdate()
         break;
 
     default:
+        // If an unexpected state occurs, reinitialize the button debounce
         debounceButtonInit();
         break;
     }
+
     return ignitionButtonReleasedEvent;
 }
