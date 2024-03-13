@@ -16,10 +16,6 @@ typedef enum {
 //=====[Declarations (prototypes) of public functions]=========================
 
 void propellerControlInit();
-void propellerDirectionWrite( motorDirection_t direction );
-
-motorDirection_t propellerDirectionRead();
-
 void propellerControlUpdate();
 float speedtest();
 
