@@ -6,7 +6,6 @@
 #include "display.h"
 #include "sensor_monitoring.h"
 #include "ignition.h"
-#include "sensor_monitoring.h"
 #include "propeller.h"
 #include "ailerons.h"
 
@@ -18,8 +17,7 @@
 
 //=====[Declarations (prototypes) of private functions]========================
 
-DigitalIn displayChange(PD_3);
-
+// Enum to represent the different screens on the user interface
 typedef enum {
     screen1,
     screen2,
@@ -27,13 +25,19 @@ typedef enum {
 
 float aileronDeg = 0;
 static screenNumber ScreenType = screen1;
+
 /**
- *  Initializes the LCD display for the system
+ * @brief Changes the current screen number based on the state of the displayChange button.
+ */
+static void getScreenNumber();
+
+/**
+ * @brief Initializes the LCD display for the user interface.
  */
 static void userInterfaceDisplayInit();
 
 /**
- *  Updates the LCD display for the system
+ * @brief Updates the LCD display for the user interface based on the current screen.
  */
 static void userInterfaceDisplayUpdate();
 
@@ -50,14 +54,16 @@ void userInterfaceUpdate()
 }
 
 //=====[Implementations of private functions]===================================
-static void getScreenNumber(){
-    if (displayChange && (ScreenType == screen1)){
+
+static void getScreenNumber()
+{
+    if (displayChange && (ScreenType == screen1)) {
         ScreenType = screen2;
-    }
-    else if (displayChange && (ScreenType == screen2)){
+    } else if (displayChange && (ScreenType == screen2)) {
         ScreenType = screen1;
     }
 }
+
 static void userInterfaceDisplayInit()
 {
     displayInit();
@@ -73,76 +79,75 @@ static void userInterfaceDisplayUpdate()
     char angleString[3] = "";
     getScreenNumber();
     sensorMonitoringUpdate();
-    if( accumulatedDisplayTime >=
-        DISPLAY_REFRESH_TIME_MS ) {
+
+    if (accumulatedDisplayTime >= DISPLAY_REFRESH_TIME_MS) {
         accumulatedDisplayTime = 0;
         if (isIgnition()) {
-            switch(ScreenType) {
+            switch (ScreenType) {
                 case screen1:
-                    if ( gasDetection() ) {
-                        displayCharPositionWrite ( 0,0 );
-                        displayStringWrite( "     URGENT     " );
-                        displayCharPositionWrite ( 0,1 );
-                        displayStringWrite( "  GAS DETECTED  " );
+                    if (gasDetection()) {
+                        displayCharPositionWrite(0, 0);
+                        displayStringWrite("     URGENT     ");
+                        displayCharPositionWrite(0, 1);
+                        displayStringWrite("  GAS DETECTED  ");
                     } else {
                         sprintf(temperatureString, "%.0f", temperatureSensorReadCelsius());
-                        displayCharPositionWrite ( 0,0 );
-                        displayStringWrite( "Tmp:   " );
-                        displayCharPositionWrite ( 4,0 );
+                        displayCharPositionWrite(0, 0);
+                        displayStringWrite("Tmp:   ");
+                        displayCharPositionWrite(4, 0);
                         displayStringWrite(temperatureString);
-                        displayCharPositionWrite ( 6,0 );
-                        displayStringWrite( "\xDF" );
-                        displayCharPositionWrite ( 7,0 );
-                        displayStringWrite( "C " );
-                        displayCharPositionWrite ( 9,0 );
-                        displayStringWrite( "Gas:ND " );
-                        displayCharPositionWrite ( 0,1 );
-                        displayStringWrite( "Engine Status:ON" );
+                        displayCharPositionWrite(6, 0);
+                        displayStringWrite("\xDF");
+                        displayCharPositionWrite(7, 0);
+                        displayStringWrite("C ");
+                        displayCharPositionWrite(9, 0);
+                        displayStringWrite("Gas:ND ");
+                        displayCharPositionWrite(0, 1);
+                        displayStringWrite("Engine Status:ON");
                     }
                     break;
                 case screen2:
-                    if ( gasDetection() ) {
-                        displayCharPositionWrite ( 0,0 );
-                        displayStringWrite( "     URGENT     " );
-                        displayCharPositionWrite ( 0,1 );
-                        displayStringWrite( "  GAS DETECTED  " );
+                    if (gasDetection()) {
+                        displayCharPositionWrite(0, 0);
+                        displayStringWrite("     URGENT     ");
+                        displayCharPositionWrite(0, 1);
+                        displayStringWrite("  GAS DETECTED  ");
                     } else {
                         sprintf(speedString, "%.2f", speedtest());
-                        displayCharPositionWrite ( 0,0 );
-                        displayStringWrite( "Speed:" );
-                        displayCharPositionWrite ( 6,0 );
+                        displayCharPositionWrite(0, 0);
+                        displayStringWrite("Speed:");
+                        displayCharPositionWrite(6, 0);
                         displayStringWrite(speedString);
-                        displayCharPositionWrite ( 9,0 );
-                        displayStringWrite( " mph  " );
-                        if (aileronsdegrees() < 0){
+                        displayCharPositionWrite(9, 0);
+                        displayStringWrite(" mph  ");
+
+                        if (aileronsdegrees() < 0) {
                             aileronDeg = -aileronsdegrees();
-                            displayCharPositionWrite ( 15,1 );
-                            displayStringWrite( "E" );
-                        }
-                        else{
+                            displayCharPositionWrite(15, 1);
+                            displayStringWrite("E");
+                        } else {
                             aileronDeg = aileronsdegrees();
-                            displayCharPositionWrite ( 15,1 );
-                            displayStringWrite( "W" );
+                            displayCharPositionWrite(15, 1);
+                            displayStringWrite("W");
                         }
                         sprintf(angleString, "%.1f", aileronDeg);
-                        displayCharPositionWrite ( 0,1 );
-                        displayStringWrite( "Alr angle:" );
-                        displayCharPositionWrite ( 10,1 );
-                        displayStringWrite( angleString );
-                        displayCharPositionWrite ( 14,1 );
-                        displayStringWrite( "\xDF" );
+                        displayCharPositionWrite(0, 1);
+                        displayStringWrite("Alr angle:");
+                        displayCharPositionWrite(10, 1);
+                        displayStringWrite(angleString);
+                        displayCharPositionWrite(14, 1);
+                        displayStringWrite("\xDF");
                     }
                     break;
-            }   
+            }
         } else {
-            displayCharPositionWrite ( 0,0 );
-            displayStringWrite( "   Welcome to   " );
-            displayCharPositionWrite ( 0,1 );
-            displayStringWrite( "  the airplane  " );
+            displayCharPositionWrite(0, 0);
+            displayStringWrite("   Welcome to   ");
+
+            displayCharPositionWrite(0, 1);
+            displayStringWrite("  the airplane  ");
         }
     } else {
-        accumulatedDisplayTime = accumulatedDisplayTime + TIME_INCREMENT_INTERFACE_MS;        
-    } 
+        accumulatedDisplayTime = accumulatedDisplayTime + TIME_INCREMENT_INTERFACE_MS;
+    }
 }
-
-
