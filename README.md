@@ -1,34 +1,17 @@
-Fafouri, Zaid and Harrington, Collin
+Fafouri, Zaid ; Ndiaye, Papa; Rachad Mohammed
 
 ---
 
-**Windshield Wiper System**
+**The model airplane**
 
-This project prototypes the windshield wiper system of a motor vehicle. It allows a user to select from four windshield wiper modes,
-OFF, LOW, INTERMITTENT, and HIGH. In the INTERMITTENT mode, the wipers pause in between sweeps based on a user selected delay time of
-SHORT, MEDIUM, or LONG. In the LOW and HIGH modes, the windhsield wipers move at different speeds, roughly 30 and 40 rpm respectively.
-All information about the current mode of the wipers is displayed to the user and a mock ignition system is included in the prototype.
+This project prototypes an airplane. To implement the software for our model airplane system seven modules are used. The seven modules include the propeller module, ignition module, aileron module, user interface module, airplane system module, sensor monitoring, and the display module.
 
----
+The sensor monitoring module acts as a driver, only interacting with the user interface module, relaying real-time information gathered from the gas and temperature sensors installed on the model airplane. Similarly, the display module works as a driver only working with the user interface module to write data and set pointers on the LCD display. The temperature sensor’s voltages are averaged and converted to celsius to eventually be sent to the LCD display via the user interface module. Meanwhile, the gas sensor is waiting to detect any gas. Any detected gas will activate the alarm LED(LED3 on the NUCLEO board) The same user interface module calls the display module to update the LCD display with all relevant information coming from the two aforementioned sensors. 
 
-**Ignition Subsystem**
-Specification | Result | Comments
---- | --- | ---
-When the ignition button is pressed and the driver is seated, the blue LED turns on | PASS | ---
-If the driver leaves the vehicle, the ignition continues running | PASS | ---
-Pressing and releasing the ignition button turns off the engine when it is on | PASS | ---
+The ignition module acts as a subsystem and is responsible for checking if all switches are in the proper on position for the airplane to be able to properly operate and start. If this is true, and the ignition button is pressed then a blue LED(LED2) on the NUCLEO board will turn on signifying that the plane’s engine is on. The module includes functions to debounce any buttons used for the ignition button, but the ignition button will be the user button seen on the NUCLEO board which is already debounced. 
 
----
+The Aileron module is a subsystem and is in charge of checking the potentiometer value assigned to the aileron, to then determine what the position of the ailerons will be. A switch case is used in conjunction with a sub function that constantly updates the state of the aileron potentiometer in order to control their movement. For example, if the sub function for the potentiometer indicates that the user would like to turn left, then the function with the switch case will relay instructions to the positional servo motors to make their movements to their respective positions. The ailerons will look at the precise position of the potentiometer to turn either left or right. The ailerons have the ability to move 50 degrees in the left or right direction. When the ignition is turned off, or the ailerons are set to their neutral position through the potentiometer, the servos will return to their initial position. Additionally, the ailerons will not move until the ignition of the plane is on. 
 
-**Wiper Subsystem**
-Specification | Result | Comments
---- | --- | ---
-When the engine is running and the wiper mode is OFF, the wiper does not run and returns to zero position | PASS | ---
-When the engine is running and the wiper mode is LO, the wiper runs at ~30rpm and does continuous sweeps| PASS | ---
-When the engine is running and the wiper mode is HI, the wiper runs at ~40rpm and does continuous sweeps | PASS | ---
-When the engine is running and the wiper mode is INT, the wiper runs at ~30rpm, doing one sweep at a time and delaying based on a user selected delay time | PASS | ---
-Each INT time selection delays for the correct amount of time | PASS | ---
-If the engine is off, the wipers do not sweep | PASS | ---
-A display shows the current wiper mode (and wiper delay time if pertinent) | PASS | ---
-If the engine is turned off or the wiper mode is set to off, the wiper returns to the zero position after completing its current cycle | PASS | ---
-If the wiper is in intermittent mode and waiting to begin a sweep when the engine is turned off or the wiper mode is changed to off, the wiper remains at the zero position and does not begin a sweep | PASS | ---
+The propeller module is a subsystem and operates similarly to the aileron module. A potentiometer assigned to the propeller will update a sub function on the current state of the propeller. If the user wants to turn on the propellor, the potentiometer relays this information to a function that will then print the speed of the motor through the LCD display. If the ignition is turned off, or the propeller is set to off through the potentiometer, then the propeller will cease all movements. Additionally, the propeller will not turn on until the ignition of the plane is on. 
+
+The airplane system module is our system and will then call the ignition, aileron, propellor, and user interface modules/subsystems. It will first initialize all of the settings for the external hardware, such as returning the ailerons to their initial position, resetting the LCD display, making sure the ignition is turned off, and turning the propeller off if it was previously on in a singular function. It will then run all of the pertinent functions from each module to ensure the proper operation of the model airplane in a singular function. The main module will then call only the two public airplane system functions to run the model airplane system in its entirety.
