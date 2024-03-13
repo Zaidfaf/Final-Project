@@ -6,15 +6,15 @@
 //=====[Declarations (prototypes) of public functions]=========================
 
 /**
- *  Initializes the user interface
+ * @brief Initializes the user interface.
  */
 void userInterfaceInit();
 
 /**
- *  Updates the user interface
+ * @brief Updates the user interface.
  */
 void userInterfaceUpdate();
 
 //=====[#include guards - end]=================================================
 
-#endif // _USER_INTERFACE_
+#endif // _USER_INTERFACE_H_
