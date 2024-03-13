@@ -32,6 +32,18 @@ DigitalInOut motorM2Pin(PE_3);
 //=====[Declaration and initialization of public global variables]=============
 
 //=====[Declaration and initialization of private global variables]============
+
+motorDirection_t propellerDirectionRead()
+{
+    return motorDirection;
+}
+
+static void propellerDirectionWrite(motorDirection_t direction)
+{
+    motorDirection = direction;
+}
+//=====[Implementations of public functions]===================================
+
 void propellerControlInit()
 {
     motorM1Pin.mode(OpenDrain);
@@ -42,16 +54,6 @@ void propellerControlInit()
 
     motorDirection = STOPPED;
     motorState = STOPPED;
-}
-
-motorDirection_t propellerDirectionRead()
-{
-    return motorDirection;
-}
-
-void propellerDirectionWrite(motorDirection_t direction)
-{
-    motorDirection = direction;
 }
 
 float speedtest() {
