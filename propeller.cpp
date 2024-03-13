@@ -11,6 +11,7 @@
 #define MOTOR_UPDATE_TIME 9
 
 //=====[Declaration of private data types]=====================================
+//=====[Declaration and initialization of public global objects]===============
 
 AnalogIn speedControl(A0);
 DigitalInOut motorM1Pin(PF_2);
