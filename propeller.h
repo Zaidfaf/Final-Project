@@ -7,12 +7,6 @@
 
 //=====[Declaration of public data types]======================================
 
-typedef enum {
-    DIRECTION_1,
-    DIRECTION_2,
-    STOPPED
-} motorDirection_t;
-
 //=====[Declarations (prototypes) of public functions]=========================
 
 void propellerControlInit();
