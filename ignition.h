@@ -6,17 +6,18 @@
 //=====[Declarations (prototypes) of public functions]=========================
 
 /**
- *  Initializes the ignition module
+ * @brief Initializes the ignition module.
  */
 void ignitionInit();
 
 /**
- *  Updates the ignition module
+ * @brief Updates the ignition module.
  */
 void ignitionUpdate();
 
 /**
- *  Returns true if the ignition is on, false otherwise
+ * @brief Checks if the ignition is currently ON.
+ * @return true if ignition is ON, false otherwise.
  */
 bool isIgnition();
 
