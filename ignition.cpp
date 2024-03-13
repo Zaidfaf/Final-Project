@@ -39,8 +39,6 @@ DigitalIn switch_4(D10);
 DigitalIn ignitionButton(BUTTON1);
 
 DigitalOut ignitionLed(LED2);
-DigitalOut alarmLed1(LED1);
-DigitalOut incorrectCodeLed(LED3);
 
 //=====[Declaration and initialization of public global objects]===============
 
@@ -56,7 +54,6 @@ buttonState_t ignitionButtonState;
 //=====[Declarations (prototypes) of private functions]=========================
 
 void debounceButtonInit();
-
 bool debounceButtonUpdate();
 
 
