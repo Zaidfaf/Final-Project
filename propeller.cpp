@@ -10,36 +10,48 @@
 
 #define MOTOR_UPDATE_TIME 9
 
-//=====[Declaration of private data types]=====================================
-
-typedef enum {
-    DIRECTION_1,
-    DIRECTION_2,
-    STOPPED
-} motorDirection_t;
-
-motorDirection_t motorDirection;
-motorDirection_t motorState;
-
-//=====[Declaration and initialization of public global objects]===============
-
 AnalogIn speedControl(A0);
 DigitalInOut motorM1Pin(PF_2);
 DigitalInOut motorM2Pin(PE_3);
 
-//=====[Declaration of external public global variables]=======================
+motorDirection_t motorDirection;
+motorDirection_t motorState;
 
-//=====[Declaration and initialization of public global variables]=============
+//=====[Declarations (prototypes) of private functions]=======================
 
-//=====[Declaration and initialization of private global variables]============
+/**
+ * @brief Initializes the propeller control module.
+ */
+void propellerControlInit();
 
-//=====[Declarations (prototypes) of private functions]========================
+/**
+ * @brief Reads the current direction of the propeller.
+ * @return The current direction of the propeller.
+ */
+motorDirection_t propellerDirectionRead();
 
-static motorDirection_t propellerDirectionRead();
-static void propellerDirectionWrite(motorDirection_t direction);
+/**
+ * @brief Writes the desired direction for the propeller.
+ * @param direction The desired direction to set for the propeller.
+ */
+void propellerDirectionWrite(motorDirection_t direction);
+
+/**
+ * @brief Calculates the speed based on the analog input value.
+ * @return The calculated speed value.
+ */
+float speedtest();
+
+/**
+ * @brief Updates the propeller control module, adjusting the motor state and direction.
+ */
+void propellerControlUpdate();
 
 //=====[Implementations of public functions]===================================
 
+/**
+ * @brief Initializes the propeller control module.
+ */
 void propellerControlInit()
 {
     motorM1Pin.mode(OpenDrain);
@@ -52,28 +64,55 @@ void propellerControlInit()
     motorState = STOPPED;
 }
 
-float speedtest() {
-    if (speedControl.read()> 0.5){
-        return (speedControl.read() - 0.4)*1000;
+/**
+ * @brief Reads the current direction of the propeller.
+ * @return The current direction of the propeller.
+ */
+motorDirection_t propellerDirectionRead()
+{
+    return motorDirection;
+}
+
+/**
+ * @brief Writes the desired direction for the propeller.
+ * @param direction The desired direction to set for the propeller.
+ */
+void propellerDirectionWrite(motorDirection_t direction)
+{
+    motorDirection = direction;
+}
+
+/**
+ * @brief Calculates the speed based on the analog input value.
+ * @return The calculated speed value.
+ */
+float speedtest()
+{
+    if (speedControl.read() > 0.5) {
+        return (speedControl.read() - 0.4) * 1000;
     }
-    else{
+    else {
         return 0.0;
     }
 }
 
+/**
+ * @brief Updates the propeller control module, adjusting the motor state and direction.
+ */
 void propellerControlUpdate()
 {   
-
-        if ((speedControl.read() > 0.5)&& isIgnition())  {
-            propellerDirectionWrite(STOPPED);
-        } else {
-            propellerDirectionWrite(DIRECTION_1);
-        }
-        
-        static int motorUpdateCounter = 0;
-        motorUpdateCounter++;
-        
-        if (motorUpdateCounter > MOTOR_UPDATE_TIME) {
+    // Adjust propeller direction based on speed control and ignition state
+    if ((speedControl.read() > 0.5) && isIgnition()) {
+        propellerDirectionWrite(STOPPED);
+    } else {
+        propellerDirectionWrite(DIRECTION_1);
+    }
+    
+    // Motor state update with periodicity
+    static int motorUpdateCounter = 0;
+    motorUpdateCounter++;
+    
+    if (motorUpdateCounter > MOTOR_UPDATE_TIME) {
         motorUpdateCounter = 0;
         
         switch (motorState) {
@@ -95,19 +134,5 @@ void propellerControlUpdate()
                 }
                 break;
         }
-    }        
-            
-        
-}
-
-//=====[Implementations of private functions]==================================
-
-static motorDirection_t propellerDirectionRead()
-{
-    return motorDirection;
-}
-
-static void propellerDirectionWrite(motorDirection_t direction)
-{
-    motorDirection = direction;
+    }
 }
