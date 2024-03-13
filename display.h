@@ -6,17 +6,20 @@
 //=====[Declarations (prototypes) of public functions]=========================
 
 /**
- *  Intializes the LCD display
+ * @brief Initializes the LCD display.
  */
 void displayInit( void );
 
 /**
- *  Changes the location of the LCDs "cursor" to a given x and y
+ * @brief Changes the location of the LCD's "cursor" to a given x and y.
+ * @param charPositionX The x-coordinate of the character position.
+ * @param charPositionY The y-coordinate of the character position.
  */
 void displayCharPositionWrite( uint8_t charPositionX, uint8_t charPositionY );
 
 /**
- *  Write a string to the LCD display
+ * @brief Writes a string to the LCD display.
+ * @param str The string to be written to the display.
  */
 void displayStringWrite( const char * str );
 
