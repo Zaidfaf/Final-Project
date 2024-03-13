@@ -32,6 +32,7 @@ DigitalInOut motorM2Pin(PE_3);
 //=====[Declaration and initialization of public global variables]=============
 
 //=====[Declaration and initialization of private global variables]============
+//=====[Declarations (prototypes) of private functions]========================
 
 motorDirection_t propellerDirectionRead()
 {
