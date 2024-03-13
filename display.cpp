@@ -6,6 +6,7 @@
 
 //=====[Declaration of private defines]========================================
 
+// Constants for controlling the LCD display
 #define DISPLAY_IR_CLEAR_DISPLAY   0b00000001
 #define DISPLAY_IR_ENTRY_MODE_SET  0b00000100
 #define DISPLAY_IR_DISPLAY_CONTROL 0b00001000
@@ -58,6 +59,7 @@
 
 //=====[Declaration and initialization of public global objects]===============
 
+// DigitalOut objects for controlling the display pins
 DigitalOut displayD0( D0 );
 DigitalOut displayD1( D1 );
 DigitalOut displayD2( D2 );
@@ -77,16 +79,19 @@ DigitalOut displayEn( D9 );
 
 //=====[Declarations (prototypes) of private functions]========================
 
+// Private functions for controlling the LCD display
 static void displayPinWrite( uint8_t pinName, int value );
 static void displayDataBusWrite( uint8_t dataByte );
 static void displayCodeWrite( bool type, uint8_t dataBus );
 
 //=====[Implementations of public functions]===================================
 
+// Function to initialize the LCD display
 void displayInit()
 {
     delay( 50 );
     
+    // Initialization sequence for the LCD display
     displayCodeWrite( DISPLAY_RS_INSTRUCTION, 
                       DISPLAY_IR_FUNCTION_SET | 
                       DISPLAY_IR_FUNCTION_SET_8BITS );
@@ -134,8 +139,10 @@ void displayInit()
     delay( 1 );  
 }
 
+// Function to set the position for writing characters on the LCD display
 void displayCharPositionWrite( uint8_t charPositionX, uint8_t charPositionY )
 {    
+    // Set the display's internal DDRAM address based on the character position
     switch( charPositionY ) {
         case 0:
             displayCodeWrite( DISPLAY_RS_INSTRUCTION, 
@@ -171,8 +178,10 @@ void displayCharPositionWrite( uint8_t charPositionX, uint8_t charPositionY )
     }
 }
 
+// Function to write a string to the LCD display
 void displayStringWrite( const char * str )
 {
+    // Write each character in the string to the display
     while (*str) {
         displayCodeWrite(DISPLAY_RS_DATA, *str++);
     }
@@ -180,18 +189,26 @@ void displayStringWrite( const char * str )
 
 //=====[Implementations of private functions]==================================
 
+// Private function to control the LCD display pins
 static void displayCodeWrite( bool type, uint8_t dataBus )
 {
+    // Select either instruction or data mode based on the type
     if ( type == DISPLAY_RS_INSTRUCTION )
         displayPinWrite( DISPLAY_PIN_RS, DISPLAY_RS_INSTRUCTION);
         else
         displayPinWrite( DISPLAY_PIN_RS, DISPLAY_RS_DATA);
+    
+    // Set the display to write mode
     displayPinWrite( DISPLAY_PIN_RW, DISPLAY_RW_WRITE );
+    
+    // Write the data to the display
     displayDataBusWrite( dataBus );
 }
 
+// Private function to write data to the LCD display pins
 static void displayPinWrite( uint8_t pinName, int value )
 {
+    // Set the specified pin to the specified value
     switch( pinName ) {
         case DISPLAY_PIN_D0: displayD0 = value;   break;
         case DISPLAY_PIN_D1: displayD1 = value;   break;
@@ -208,9 +225,13 @@ static void displayPinWrite( uint8_t pinName, int value )
     }
 }
 
+// Private function to write data to the data bus of the LCD display
 static void displayDataBusWrite( uint8_t dataBus )
 {
+    // Set the enable pin to start the data transfer
     displayPinWrite( DISPLAY_PIN_EN, OFF );
+    
+    // Write each bit of the data byte to the corresponding data pin
     displayPinWrite( DISPLAY_PIN_D7, dataBus & 0b10000000 );
     displayPinWrite( DISPLAY_PIN_D6, dataBus & 0b01000000 );
     displayPinWrite( DISPLAY_PIN_D5, dataBus & 0b00100000 );
@@ -219,8 +240,12 @@ static void displayDataBusWrite( uint8_t dataBus )
     displayPinWrite( DISPLAY_PIN_D2, dataBus & 0b00000100 );  
     displayPinWrite( DISPLAY_PIN_D1, dataBus & 0b00000010 );      
     displayPinWrite( DISPLAY_PIN_D0, dataBus & 0b00000001 );
+    
+    // Set the enable pin to complete the data transfer
     displayPinWrite( DISPLAY_PIN_EN, ON );              
     delay( 1 );
+    
+    // Set the enable pin back to finish the data transfer
     displayPinWrite( DISPLAY_PIN_EN, OFF );  
     delay( 1 );                   
 }
